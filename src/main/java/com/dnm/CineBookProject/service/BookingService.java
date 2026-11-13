@@ -58,9 +58,8 @@ public class BookingService {
     }
 
     @Transactional
-    public BookingResponse find(Long bookingId) {
-        Booking booking = bookingRepository.findWithDetailsById(bookingId)
-                .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
+    public BookingResponse find(Long bookingId){
+        Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
 
         return BookingResponse.from(booking);
     }
