@@ -36,6 +36,7 @@ public class ProfileController {
 
     @GetMapping("/{profileId}/bookings")
     public List<BookingResponse> bookings(@PathVariable Long profileId){
+
         return bookingService.findByProfileId(profileId);
     }
 

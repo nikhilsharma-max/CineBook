@@ -26,11 +26,14 @@ function BookingsPage() {
         setLoading(true);
         setError('');
         const data = await getProfileBookings(profile.id);
+        console.log("Booking data"+data);
         setBookings(data);
       } catch (requestError: unknown) {
+          console.log(requestError);
         setError(getApiErrorMessage(requestError, 'Unable to load bookings.'));
       } finally {
         setLoading(false);
+
       }
     };
 

@@ -14,11 +14,19 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> findByCustomerPhoneOrderByBookedAtDesc(String customerPhone);
 
     @EntityGraph(attributePaths = "seatLabels")
-    Optional<Booking> findByIdAndCustomerPhone(Long id, String customerPhone);
+    Optional<Booking> findById(Long id);
 
     @EntityGraph(attributePaths = "seatLabels")
     List<Booking> findByCustomerIdOrderByBookedAtDesc(Long customerId);
 
     @EntityGraph(attributePaths = "seatLabels")
     Optional<Booking> findByIdAndCustomerId(Long id, Long customerId);
+
+    @EntityGraph(attributePaths = {
+            "seatLabels",
+            "show",
+            "show.movie",
+            "show.theatre"
+    })
+    Optional<Booking> findWithDetailsById(Long id);
 }
