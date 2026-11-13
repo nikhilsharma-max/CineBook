@@ -13,6 +13,7 @@ import com.dnm.CineBookProject.repository.CustomerRepository;
 import com.dnm.CineBookProject.repository.ShowRepository;
 import com.dnm.CineBookProject.repository.ShowSeatRepository;
 import jakarta.transaction.Transactional;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -64,15 +65,15 @@ public class BookingService {
         return BookingResponse.from(booking);
     }
 
-    @Transactional
-    public List<BookingResponse> findByProfileId(Long profileId){
-        if(!customerRepository.existsById(profileId)){
-            throw  new ResourceNotFoundException("Profile not found");
-        }
-        List<BookingResponse> list = bookingRepository.findByCustomerIdOrderByBookedAtDesc(profileId).stream()
-                .map(BookingResponse::from).toList();
-        return list;
-    }
+//    @Transactional
+//    public List<BookingResponse> findByProfileId(Long profileId){
+//        if(!customerRepository.existsById(profileId)){
+//            throw  new ResourceNotFoundException("Profile not found");
+//        }
+//        List<BookingResponse> list = bookingRepository.findByCustomerIdOrderByBookedAtDesc(profileId).stream()
+//                .map(BookingResponse::from).toList();
+//        return list;
+//    }
 
     @Transactional
     public BookingResponse cancel(Long bookingId,Long profileId){
@@ -85,5 +86,23 @@ public class BookingService {
             booking.cancel();
         }
         return BookingResponse.from(booking);
+    }
+
+    @Transactional
+    public List<BookingResponse> findByProfileId(Long profileId) {
+
+        if (!customerRepository.existsById(profileId)) {
+            throw new ResourceNotFoundException("Profile not found");
+        }
+
+        List<Booking> bookings =
+                bookingRepository.findByCustomerIdOrderByBookedAtDesc(profileId);
+
+        return bookings.stream()
+                .map(booking -> {
+                    Hibernate.initialize(booking.getSeatLabels());
+                    return BookingResponse.from(booking);
+                })
+                .toList();
     }
 }
