@@ -1,686 +1,435 @@
-# 🎬 CineBook — Movie Ticket Booking Platform
+::: {align="center"}
+# 🎬 CineBook
 
-A full-stack movie ticket booking application inspired by BookMyShow, built using **Java, Spring Boot, React, TypeScript, and MySQL**.
+### Online Movie Ticket Booking System
 
-CineBook provides a complete cinema-booking experience, allowing users to explore movies, discover theatres, view available shows, select seats, simulate payments, and manage their bookings through a responsive web interface.
+A full-stack movie ticket booking application built with **React,
+TypeScript, Spring Boot, and MySQL**.
 
----
+[Features](#-features) · [Architecture](#-architecture) · [Tech
+Stack](#-technology-stack) · [Database](#-database-design) ·
+[Setup](#-getting-started) · [API](#-api-overview)
+:::
 
-## 📌 Table of Contents
+------------------------------------------------------------------------
 
-1. [Project Overview](#-project-overview)
-2. [Features](#-features)
-3. [Technology Stack](#-technology-stack)
-4. [System Architecture](#-system-architecture)
-5. [Project Structure](#-project-structure)
-6. [Database Design](#-database-design)
-7. [Backend API Endpoints](#-backend-api-endpoints)
-8. [Application Workflow](#-application-workflow)
-9. [Getting Started](#-getting-started)
-10. [Configuration](#-configuration)
-11. [Running the Application](#-running-the-application)
-12. [Payment Simulation](#-payment-simulation)
-13. [Future Enhancements](#-future-enhancements)
-14. [Important Notes](#-important-notes)
+## 📌 Overview
 
----
+**CineBook** is a web-based movie ticket booking application that brings
+the essential stages of movie discovery and ticket booking into one
+platform. Users can explore movies, view theatres and show schedules,
+select seats, complete a simulated payment flow, and manage their
+bookings.
 
-## 🎯 Project Overview
+The project uses a React and TypeScript frontend connected to a Java
+Spring Boot REST API. MySQL stores the application's relational data,
+while Spring Data JPA and Hibernate handle object-relational mapping and
+persistence.
 
-CineBook is a full-stack web application developed to demonstrate the implementation of a real-world movie ticket booking system.
-
-The application connects a React-based frontend with a Spring Boot REST API and a MySQL relational database.
-
-Users can:
-
-- Browse movies and their details.
-- Explore theatres based on selected cities.
-- Check available movie shows and timings.
-- Select seats from an interactive seating layout.
-- Register and log in using their email address or phone number.
-- Book movie tickets.
-- View their booking history.
-- Cancel confirmed bookings.
-- Experience a simulated payment process.
-
-The project focuses on practical implementation of full-stack development concepts, RESTful API design, relational database management, entity relationships, data persistence, and transaction-oriented application workflows.
+> **Project note:** The payment flow is simulated for demonstration
+> purposes. The application does not currently process real payments
+> through an external payment gateway.
 
 ## ✨ Features
 
-### 1. Movie Discovery
+-   **Movie discovery** --- browse available movies and view movie
+    information.
+-   **Theatre and show listings** --- explore theatres and scheduled
+    showtimes.
+-   **Seat selection** --- view show-specific seats and their
+    reservation state.
+-   **Booking workflow** --- submit a booking after the simulated
+    payment-success flow.
+-   **Booking history** --- retrieve bookings associated with a customer
+    profile.
+-   **Booking details** --- view information about an individual
+    booking.
+-   **Cancellation** --- request cancellation through the supported
+    booking workflow.
+-   **Seat availability validation** --- backend validation helps
+    prevent booking seats that are already reserved.
+-   **REST-based integration** --- frontend and backend communicate
+    through HTTP APIs using JSON.
 
-- Browse the available movie collection.
-- View movie posters, descriptions, genres, languages, and durations.
-- Search movies by title.
-- Explore movie details and available trailers where provided.
-- Identify movies through their certification and language information.
+## 🧱 Technology Stack
 
-### 2. Theatre Discovery
+  -----------------------------------------------------------------------
+  Layer                   Technology              Purpose
+  ----------------------- ----------------------- -----------------------
+  Frontend                React, TypeScript       User interface and
+                                                  application
+                                                  interactions
 
-- Select a city from the available city dropdown.
-- Browse theatres associated with the selected city.
-- View theatre names and addresses.
-- Explore movie shows available at each theatre.
-- Filter show listings by date.
+  Build tooling           Vite                    Frontend development
+                                                  and production build
 
-### 3. Show Management
+  Styling                 Tailwind CSS            Responsive UI styling
 
-- View movie showtimes.
-- Check ticket prices.
-- View available seats.
-- Access seat selection from individual shows.
+  Routing                 React Router            Client-side navigation
 
-### 4. Customer Accounts
+  HTTP client             Axios                   API communication
 
-- Register a customer account.
-- Log in using an email address or phone number.
-- View account information.
-- Receive success and error notifications for account operations.
-- Log out of the application.
+  Backend                 Java, Spring Boot       REST API and business
+                                                  logic
 
-### 5. Interactive Seat Selection
+  Persistence             Spring Data JPA         Repository-based
+                                                  database access
 
-- View the seating layout for a selected show.
-- Select multiple available seats.
-- Identify selected and unavailable seats visually.
-- View selected seat labels.
-- Calculate the total booking amount dynamically.
-- Prevent duplicate or unavailable seat selections.
+  ORM                     Hibernate               Java
+                                                  object-to-relational
+                                                  mapping
 
-### 6. Booking Management
+  Database                MySQL                   Persistent relational
+                                                  data
 
-- Create a booking for a selected show.
-- Associate the booking with a customer.
-- Store the selected seat labels.
-- Calculate the total booking amount.
-- View booking details and booking history.
-- Cancel confirmed bookings.
-- Release seats when a confirmed booking is cancelled.
+  Version control         Git, GitHub             Source-code management
+  -----------------------------------------------------------------------
 
-### 7. Simulated Payment
+## 🏛️ Architecture
 
-CineBook includes a demonstration payment interface inspired by real-world cinema booking platforms.
+CineBook follows a layered client--server architecture:
 
-The payment interface provides multiple illustrative payment options and two simulation controls:
-
-- **Mock Payment Success:** Simulates a successful transaction and proceeds with the booking flow.
-- **Mock Payment Failure:** Simulates a failed transaction and allows the user to return to seat selection and try again.
-
-This functionality is intended for academic demonstration and does not process actual payments.
-
-### 8. User Experience
-
-- Responsive user interface.
-- Loading animations for important operations.
-- Success and error notifications.
-- Loading, empty, and error states.
-- Interactive navigation.
-- Clear booking summaries.
-- Visual distinction between available, selected, and reserved seats.
-
----
-
-## 🛠️ Technology Stack
-
-### Frontend
-
-| Technology | Purpose |
-|---|---|
-| React | Component-based UI development |
-| TypeScript | Type safety and maintainable frontend code |
-| Vite | Frontend development and build tooling |
-| Tailwind CSS | Styling and responsive layouts |
-| Axios | HTTP communication with backend APIs |
-| React Router | Client-side navigation |
-| Lucide React | Icons and interface elements |
-
-### Backend
-
-| Technology | Purpose |
-|---|---|
-| Java | Backend programming language |
-| Spring Boot | Application framework |
-| Spring Web | REST API development |
-| Spring Data JPA | Database persistence |
-| Hibernate | ORM implementation |
-| Maven | Dependency and build management |
-| Jakarta Persistence | Entity mapping and persistence |
-| MySQL Connector/J | MySQL database connectivity |
-
-### Database
-
-| Technology | Purpose |
-|---|---|
-| MySQL | Relational database |
-| MySQL Workbench | Database administration and SQL queries |
-
----
-
-## 🏗️ System Architecture
-
-CineBook follows a layered full-stack architecture.
-
-```text
-              USER
-               |
-               v
-       REACT FRONTEND
-       (React + TypeScript)
-               |
-               | HTTP / REST API
-               v
-       SPRING BOOT BACKEND
-               |
-       +-------+--------+
-       |                |
-       v                v
-   CONTROLLERS       SERVICES
-       |                |
-       +-------+--------+
-               |
-               v
-          REPOSITORIES
-               |
-               v
-         SPRING DATA JPA
-               |
-               v
-           HIBERNATE
-               |
-               v
-          MYSQL DATABASE
+``` text
+┌──────────────────────────────┐
+│       React Frontend         │
+│   TypeScript · Vite · UI     │
+└──────────────┬───────────────┘
+               │ HTTP / JSON
+               ▼
+┌──────────────────────────────┐
+│       Spring Boot API        │
+│       REST Controllers       │
+└──────────────┬───────────────┘
+               ▼
+┌──────────────────────────────┐
+│        Service Layer         │
+│     Booking & App Logic      │
+└──────────────┬───────────────┘
+               ▼
+┌──────────────────────────────┐
+│     Spring Data JPA /        │
+│        Hibernate ORM         │
+└──────────────┬───────────────┘
+               │ SQL
+               ▼
+┌──────────────────────────────┐
+│          MySQL               │
+│     Relational Database      │
+└──────────────────────────────┘
 ```
 
-### Frontend Layer
+### Request lifecycle
 
-Responsible for:
+1.  A user performs an action in the React frontend.
+2.  The frontend sends an HTTP request to a Spring Boot REST endpoint.
+3.  The controller delegates the request to the relevant service.
+4.  The service applies application rules and uses repositories to
+    access data.
+5.  Hibernate and JPA translate persistence operations into database
+    interactions.
+6.  The backend returns a JSON response to the frontend.
 
-- Rendering the user interface.
-- Collecting user input.
-- Managing frontend state.
-- Communicating with backend REST APIs.
-- Displaying movie, theatre, show, seat, and booking information.
+## 🗃️ Database Design
 
-### Controller Layer
+The application uses a MySQL database named `CineBook` with seven
+principal tables.
 
-Receives HTTP requests and exposes REST endpoints.
+  -----------------------------------------------------------------------
+  Table                               Responsibility
+  ----------------------------------- -----------------------------------
+  `movies`                            Movie catalogue information such as
+                                      title, language, genre, duration,
+                                      certificate, description, poster
+                                      and trailer URLs, and active
+                                      status.
 
-### Service Layer
+  `theatre`                           Theatre name and location details.
 
-Contains the application's business logic, including:
+  `shows`                             Scheduled screenings, movie and
+                                      theatre references, timings, ticket
+                                      price, seat counts, active status,
+                                      and version field.
 
-- Movie and theatre discovery.
-- Show retrieval.
-- Customer registration.
-- Booking creation.
-- Seat availability validation.
-- Booking cancellation.
+  `show_seats`                        Seat labels and reservation state
+                                      for a particular show.
 
-### Repository Layer
+  `customers`                         Customer name, email, and phone
+                                      information.
 
-Uses Spring Data JPA repositories to communicate with the database.
+  `bookings`                          Booking records, show/customer
+                                      references, customer contact
+                                      fields, amount, booking timestamp,
+                                      and status.
 
-### Database Layer
+  `booking_seats`                     Seat labels associated with a
+                                      booking.
+  -----------------------------------------------------------------------
 
-MySQL stores persistent application information, including movies, theatres, shows, customers, seats, and bookings.
+### Entity relationships
 
----
+The principal relationships represented by the database are:
 
-## 📂 Project Structure
+-   `movies` **1 --- N** `shows`
+-   `theatre` **1 --- N** `shows`
+-   `shows` **1 --- N** `show_seats`
+-   `customers` **1 --- N** `bookings`
+-   `shows` **1 --- N** `bookings`
+-   `bookings` **1 --- N** `booking_seats`
 
-```text
-CineBookProject/
-│
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   └── com/dnm/CineBookProject/
-│   │   │       │
-│   │   │       ├── controller/
-│   │   │       │
-│   │   │       ├── service/
-│   │   │       │
-│   │   │       ├── repository/
-│   │   │       │
-│   │   │       ├── entity/
-│   │   │       │
-│   │   │       ├── dto/
-│   │   │       │
-│   │   │       ├── exception/
-│   │   │       │
-│   │   │       └── CineBookProjectApplication.java
-│   │   │
-│   │   └── resources/
-│   │       ├── application.properties
-│   │       └── CineBook_DBMS_Master_Documentation.md
-│   │
-│   └── test/
-│
-├── frontend/
-│   ├── public/
+`booking_seats` is mapped in the Java persistence model as a JPA
+element-collection table for the booking's seat-label collection, rather
+than as a separate domain entity.
+
+> The exact SQL data types, key constraints, indexes, and referential
+> actions should be checked against the database DDL. The table overview
+> above describes the identified application schema, not a substitute
+> for the live DDL.
+
+## 🎟️ Booking Workflow
+
+At a high level, the booking flow is:
+
+1.  The user selects a movie, theatre, and show.
+2.  The application loads the seats associated with the selected show.
+3.  The user selects seat labels.
+4.  The backend validates the requested seats against the current
+    reservation state.
+5.  The simulated payment flow determines whether the booking-success
+    path proceeds.
+6.  On the mock success path, the backend creates the booking and stores
+    its associated seat labels.
+7.  The user can view the booking in the booking-history/details flow.
+
+A simulated payment failure is intended not to create a booking or
+reserve the selected seats.
+
+### Transaction and concurrency considerations
+
+The `Show` entity includes a JPA `@Version` field for optimistic version
+checking. The booking implementation also uses a repository method named
+`findForUpdate` for seat records. Check the repository's lock annotation
+or query definition for the precise locking mode used by the current
+source.
+
+## 📂 Repository Structure
+
+The repository contains the backend project and the frontend application
+in a `frontend/` directory.
+
+``` text
+CineBook/
+├── frontend/                 # React + TypeScript frontend
 │   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── services/
-│   │   └── ...
-│   │
+│   ├── public/
 │   ├── package.json
-│   └── vite.config.ts
-│
-├── .gitignore
-├── mvnw
-├── mvnw.cmd
-├── pom.xml
+│   └── ...
+├── src/                      # Spring Boot backend source
+│   └── main/
+│       ├── java/
+│       └── resources/
+├── pom.xml                   # Maven backend configuration
+├── mvnw                      # Maven wrapper (Unix)
+├── mvnw.cmd                  # Maven wrapper (Windows)
 └── README.md
 ```
 
-*Note: The exact package and frontend subdirectory contents may vary as the application evolves.*
-
----
-
-## 🗄️ Database Design
-
-CineBook uses MySQL as its relational database management system.
-
-The database contains the following primary tables:
-
-| Table | Description |
-|---|---|
-| `movies` | Stores movie information |
-| `theatre` | Stores theatre information |
-| `shows` | Stores show timings, ticket prices, and availability |
-| `show_seats` | Stores seat-level availability for individual shows |
-| `customers` | Stores customer account information |
-| `bookings` | Stores booking details and customer information |
-| `booking_seats` | Stores the seat labels associated with each booking |
-
-### Important Relationships
-
-- A movie can have multiple shows.
-- A theatre can host multiple shows.
-- A show can contain multiple seats.
-- A customer can make multiple bookings.
-- A booking belongs to a particular customer and show.
-- A booking can contain multiple seat labels.
-
-### Database Concepts Demonstrated
-
-- Primary keys.
-- Foreign keys.
-- One-to-many relationships.
-- Many-to-one relationships.
-- Entity mapping using JPA.
-- Relational data modelling.
-- Collection tables using `@ElementCollection`.
-- Data consistency across related tables.
-- Transaction management during booking operations.
-
-### Seat Management
-
-Each show maintains its own seat records.
-
-When a customer books seats:
-
-1. The application retrieves the requested seats.
-2. It checks whether the selected seats exist and are available.
-3. The selected seats are marked as reserved.
-4. The available seat count is updated.
-5. A booking record is created.
-6. The selected seat labels are stored in `booking_seats`.
-
-When a confirmed booking is cancelled, the corresponding seats are released and the show availability is updated.
-
----
-
-## 🔌 Backend API Endpoints
-
-The following are the core API routes used by the application.
-
-**Base URL:**
-
-```text
-http://localhost:8080
-```
-
-### Movies
-
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/v1/movies` | Retrieve active movies |
-
-### Theatres
-
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/v1/theatres?city={city}` | Retrieve theatres for a city |
-
-### Shows
-
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/v1/shows?city={city}&date={date}` | Retrieve shows for a city and date |
-| GET | `/api/v1/shows/{showId}/seats` | Retrieve seats for a show |
-
-### Customer Profiles
-
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/api/v1/profiles` | Register a customer |
-| GET | `/api/v1/profiles/login?identifier={identifier}` | Log in using email or phone |
-
-### Bookings
-
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/api/v1/bookings/shows/{showId}` | Create a booking |
-| GET | `/api/v1/bookings/{bookingId}` | Retrieve booking details |
-| GET | `/api/v1/profiles/{profileId}/bookings` | Retrieve customer booking history |
-| POST | `/api/v1/bookings/{bookingId}/cancel` | Cancel a booking |
-
-*These routes describe the core API contract used during development. Refer to the actual backend controllers for request and response structures.*
-
----
-
-## 🔄 Application Workflow
-
-The typical booking workflow is:
-
-```text
-         START
-           |
-           v
-     Browse Movies
-           |
-           v
-     Select a Movie
-           |
-           v
-     Select a City
-           |
-           v
-     Choose a Theatre
-           |
-           v
-      Select a Show
-           |
-           v
-      Select Seats
-           |
-           v
-    Review Booking
-           |
-           v
-     Mock Payment
-           |
-           v
-    Payment Result
-       /       \
-      /         \
-  SUCCESS      FAILURE
-     |             |
-     v             v
-Create Booking   Return to
-     |           Seat Selection
-     v
-Update Seats
-     |
-     v
-Booking Confirmation
-     |
-     v
-   END
-```
-
----
+*The exact package and source-file layout may evolve as the project
+changes.*
 
 ## 🚀 Getting Started
 
-Follow these steps to run CineBook locally.
-
 ### Prerequisites
 
-Install the following software:
+Install the following before running the project:
 
-- Java Development Kit (JDK).
-- Maven (optional, since the project includes Maven Wrapper).
-- Node.js and npm.
-- MySQL Server.
-- MySQL Workbench (recommended).
-- Git.
+-   Java version compatible with the backend's `pom.xml`
+-   Maven, or use the included Maven Wrapper
+-   Node.js and npm
+-   MySQL Server
+-   Git
 
-### 1. Clone the Repository
+### 1. Clone the repository
 
-```bash
-git clone https://github.com/YOUR_USERNAME/CineBook.git
+``` bash
+git clone https://github.com/nikhilsharma-max/CineBook.git
 cd CineBook
 ```
 
-Replace `YOUR_USERNAME` with the GitHub account that owns the repository.
-
-### 2. Configure MySQL
+### 2. Configure the MySQL database
 
 Create the database:
 
-```sql
+``` sql
 CREATE DATABASE CineBook;
 ```
 
-Import or execute the required SQL seed data to populate movies, theatres, shows, and seats.
+Configure the backend database connection in the application's
+configuration (for example, `src/main/resources/application.properties`
+or environment variables, depending on the current configuration).
 
-### 3. Configure the Backend
+Do not commit database passwords or other secrets to version control.
 
-Open:
+Example configuration shape:
 
-```text
-src/main/resources/application.properties
+``` properties
+spring.datasource.url=jdbc:mysql://localhost:3306/CineBook
+spring.datasource.username=YOUR_DB_USERNAME
+spring.datasource.password=YOUR_DB_PASSWORD
 ```
 
-Configure the database connection using your local MySQL credentials.
+Use the actual configuration keys and Hibernate schema-generation
+settings present in the project. If the application relies on SQL
+scripts or migrations, run those as part of database setup.
 
-Example:
+### 3. Run the backend
 
-```properties
-spring.datasource.url=${DB_URL:jdbc:mysql://localhost:3306/CineBook}
-spring.datasource.username=${DB_USERNAME:root}
-spring.datasource.password=${DB_PASSWORD}
+From the repository root:
 
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-```
-
-The configuration above is an example. Ensure it matches the actual application configuration and database schema.
-
-### 4. Run the Backend
-
-From the project root:
-
-```bash
+``` bash
 ./mvnw spring-boot:run
 ```
 
 On Windows:
 
-```bash
+``` powershell
 mvnw.cmd spring-boot:run
 ```
 
-The backend will normally start at:
+Alternatively, build the application:
 
-```text
-http://localhost:8080
+``` bash
+./mvnw clean package
 ```
 
-### 5. Install Frontend Dependencies
+Then run the generated JAR from the `target/` directory. The exact JAR
+filename depends on the Maven project version.
 
-Open another terminal:
+### 4. Configure and run the frontend
 
-```bash
+Open a second terminal:
+
+``` bash
 cd frontend
 npm install
 ```
 
-### 6. Configure the Frontend
+Configure the frontend API base URL using the environment variable
+expected by the Axios/API configuration in the current source. For Vite
+projects, client-exposed environment variables commonly use the `VITE_`
+prefix.
 
-Create a `.env` file inside the `frontend/` directory:
+Example only:
 
-```env
-VITE_API_BASE_URL=http://localhost:8080
+``` env
+VITE_API_URL=http://localhost:8080
 ```
 
-### 7. Run the Frontend
+Confirm the exact variable name and expected URL format in the frontend
+source before creating `.env`.
 
-```bash
+Start the development server:
+
+``` bash
 npm run dev
 ```
 
-The frontend will normally be available at:
+Open the local URL printed by Vite in the terminal.
 
-```text
-http://localhost:5173
-```
+## 🔌 API Overview
 
-Open the URL in your browser to access CineBook.
+The backend exposes REST endpoints under the `/api/v1` namespace. The
+following routes are based on the identified controller paths; verify
+request bodies, response fields, authentication requirements, and HTTP
+methods against the current controller code.
 
----
+  -----------------------------------------------------------------------------------------
+  Method                  Endpoint                                  Purpose
+  ----------------------- ----------------------------------------- -----------------------
+  `POST`                  `/api/v1/bookings/shows/{showId}`         Submit a booking
+                                                                    request for a show.
 
-## ⚙️ Configuration
+  `POST`                  `/api/v1/bookings/{bookingId}/cancel`     Request cancellation of
+                                                                    a booking.
 
-### Backend Configuration
+  `GET`                   `/api/v1/bookings/{bookingId}`            Retrieve an individual
+                                                                    booking.
 
-The backend requires:
+  `GET`                   `/api/v1/profiles/{profileId}/bookings`   Retrieve booking
+                                                                    history for a profile.
+  -----------------------------------------------------------------------------------------
 
-- MySQL connection URL.
-- Database username.
-- Database password.
-- Correct database name.
-- Appropriate JPA and Hibernate settings.
+Other catalogue, theatre, show, customer, and seat endpoints are
+available according to the implemented controllers. Consult the backend
+source for the complete and current API contract.
 
-### Frontend Configuration
+## 🧪 Testing Checklist
 
-The frontend uses the following environment variable:
+Use this checklist when validating the application:
 
-| Variable | Description |
-|---|---|
-| `VITE_API_BASE_URL` | Base URL of the Spring Boot backend |
+-   [ ] Movie catalogue loads successfully.
+-   [ ] Theatre and show information is displayed correctly.
+-   [ ] Seat availability is loaded for the selected show.
+-   [ ] An available seat can be booked through the mock-success flow.
+-   [ ] An already reserved seat is rejected by backend validation.
+-   [ ] Mock payment failure does not create a booking or reserve seats.
+-   [ ] Booking history returns the expected customer/profile bookings.
+-   [ ] Booking details can be retrieved.
+-   [ ] Cancellation follows the implemented booking rules.
+-   [ ] Database records reflect the expected application operations.
 
-For local development:
+## ☁️ Deployment
 
-```env
-VITE_API_BASE_URL=http://localhost:8080
-```
+The project has been configured for a split deployment architecture:
 
-For deployment, update this value to the deployed backend URL.
+-   **Frontend:** Vercel
+-   **Backend:** Railway
+-   **Database:** MySQL hosted with the backend deployment environment
 
-**Security:** Never commit database passwords, API keys, or private environment files to a public GitHub repository.
+For deployment, configure environment variables in the hosting platforms
+rather than hardcoding credentials. Ensure that:
 
----
+-   The frontend API base URL points to the deployed backend.
+-   The backend CORS configuration permits the deployed frontend origin.
+-   The backend database URL and credentials match the provisioned MySQL
+    instance.
+-   Secrets are stored in platform environment settings.
+-   The deployed backend and frontend are tested together after every
+    release.
 
-## 💳 Payment Simulation
+## 🔐 Security and Configuration Notes
 
-CineBook implements a mock payment experience for demonstration purposes.
+-   Never commit `.env` files, database passwords, API keys, or private
+    credentials.
+-   Use environment variables for deployment-specific configuration.
+-   Restrict CORS to the frontend origins that should access the API.
+-   Validate all user-supplied identifiers and booking inputs on the
+    backend.
+-   Do not treat the simulated payment flow as proof of a real payment.
+-   Review authentication and authorization rules before using the
+    application with real customer data.
 
-The payment page provides a familiar payment interface with illustrative payment methods such as:
+## 🛠️ Possible Future Enhancements
 
-- UPI.
-- Debit/Credit Card.
-- Mobile Wallets.
-- Gift Vouchers.
-- Net Banking.
-- Pay Later.
+-   Integration with a real payment gateway and verified payment
+    callbacks.
+-   Administrative tools for managing movies, theatres, and show
+    schedules.
+-   More comprehensive automated tests for booking and concurrency
+    scenarios.
+-   Booking notifications and downloadable ticket confirmations.
+-   Improved search, filtering, and movie recommendations.
+-   Production monitoring, audit logging, backups, and security
+    hardening.
 
-The application provides two mock transaction controls.
+## 📄 License
 
-### Mock Payment Success
+No license has been specified for this repository. Unless a license is
+added, the source code should be treated as **all rights reserved** by
+its respective owner(s).
 
-When selected:
+------------------------------------------------------------------------
 
-1. A simulated transaction loading animation is displayed.
-2. The payment is marked successful within the demonstration flow.
-3. The booking process continues.
-4. The selected seats are reflected as booked.
-5. The user receives a booking confirmation.
-
-### Mock Payment Failure
-
-When selected:
-
-1. A simulated payment failure is displayed.
-2. The user receives an error notification.
-3. The user is returned to the seat-selection flow.
-4. The user can attempt the mock payment again.
-
-**Disclaimer:** CineBook does not integrate a real payment gateway. No actual money is transferred, and no real financial transaction is performed.
-
----
-
-## 🔮 Future Enhancements
-
-Potential improvements include:
-
-- Integration with a real payment gateway.
-- Secure authentication and authorization using Spring Security.
-- OTP-based customer verification.
-- Admin dashboard for managing movies, theatres, and shows.
-- Theatre and screen management.
-- Booking confirmation emails.
-- QR-code-based digital tickets.
-- Movie ratings and reviews.
-- Watchlist functionality.
-- Coupon and discount management.
-- Improved concurrency control for simultaneous seat bookings.
-- Cloud deployment and production database hosting.
-
----
-
-## 📚 Academic Concepts
-
-CineBook can also be used to demonstrate important DBMS and software engineering concepts:
-
-- ER diagram and relational schema design.
-- Entity relationship mapping.
-- Database normalization.
-- Primary and foreign key constraints.
-- Referential integrity.
-- One-to-many and many-to-one relationships.
-- ORM using Hibernate.
-- Transaction management.
-- CRUD operations.
-- RESTful API architecture.
-- Separation of concerns.
-- Layered software architecture.
-
-A separate DBMS documentation file is maintained in:
-
-```text
-src/main/resources/CineBook_DBMS_Master_Documentation.md
-```
-
----
-
-## ⚠️ Important Notes
-
-1. CineBook is an academic and demonstration project.
-2. The payment functionality is simulated and does not process real payments.
-3. The application requires a running MySQL database.
-4. The frontend and backend must be configured to communicate using the correct API base URL.
-5. The project should use environment variables for sensitive configuration.
-6. Movie posters and other external media depend on the availability of their respective image sources.
-7. Production deployment requires additional security, validation, and infrastructure configuration.
-
----
-
-## 👨‍💻 Author
-
-**Nikhil Sharma**
-
-B.Tech — Computer Science and Engineering
-
-### Project
-
-**CineBook — Movie Ticket Booking Platform**
-
-Built with Java, Spring Boot, React, TypeScript, and MySQL.
-
----
-
-*Made with ❤️ as a full-stack development and DBMS learning project.*
+::: {align="center"}
+**CineBook**\
+*Discover movies. Choose your seats. Book your experience.*
+:::
